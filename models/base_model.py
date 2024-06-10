@@ -1,8 +1,18 @@
+#!usr/bin/python3
+
 import uuid
 from datetime import datetime
+from models import storage
 
 class BaseModel:
     def __init__(self, *args, **kwargs):
+        """
+        Initializes a new instance of BaseModel.
+
+        Args:
+            *args: Variable length argument list (not used).
+            **kwargs: Arbitrary keyword arguments for deserialization.
+        """
         if kwargs:
             for key, value in kwargs.items():
                 if key == "created_at" or key == "updated_at":
@@ -22,9 +32,10 @@ class BaseModel:
 
     def save(self):
         """
-        Updates the public instance attribute `updated_at` with the current datetime.
+        Updates the public instance attribute `updated_at` with the current datetime and saves the instance to storage.
         """
         self.updated_at = datetime.now()
+        storage.save()
 
     def to_dict(self):
         """
